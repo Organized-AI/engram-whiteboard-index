@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engram Conditional Memory — Whiteboard Walkthrough // Organized AI</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+<style>
+  :root {
+    --bg: #0c0b09;
+    --panel: #14120d;
+    --panel-2: #1a170f;
+    --line: #2c281c;
+    --accent: #f5d623;
+    --accent-dim: #c4943d;
+    --text: #e8e4d8;
+    --text-dim: #8c8776;
+    --green: #8ab86b;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+  }
+
+  /* topbar, matches recordings.organizedai.vip pattern */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--text-dim);
+  }
+  .topbar .brand { color: var(--text); font-weight: 500; }
+  .topbar .brand span { color: var(--accent); }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 28px 64px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-dim);
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 6px 0;
+    line-height: 1.25;
+  }
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 24px;
+    margin-top: 28px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .player-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  video {
+    width: 100%;
+    display: block;
+    background: #000;
+    aspect-ratio: 9 / 16;
+    max-height: 640px;
+    margin: 0 auto;
+  }
+  .player-foot {
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+  }
+  .player-foot .now-playing { color: var(--accent); }
+
+  .index-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .index-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+  .topic-list {
+    max-height: 640px;
+    overflow-y: auto;
+  }
+  .topic {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .topic:hover { background: var(--panel-2); }
+  .topic.active { background: var(--panel-2); border-left: 2px solid var(--accent); }
+  .topic .ts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-dim);
+    padding-top: 1px;
+  }
+  .topic.active .ts { color: var(--accent); }
+  .topic .body .title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: var(--text);
+  }
+  .topic .body .desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    border: 1px solid var(--green);
+    border-radius: 2px;
+    padding: 1px 5px;
+    margin-top: 6px;
+  }
+
+  .footer-note {
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">ORGANIZED AI <span>// VIDEO INDEX</span></div>
+  <div>jockey-indexed · IMG_7828.mov</div>
+</div>
+
+<div class="wrap">
+  <div class="header">
+    <div class="eyebrow">// WHITEBOARD WALKTHROUGH</div>
+    <h1>Memory Hierarchy &amp; Engram Conditional Memory</h1>
+    <div class="meta">4:20 · indexed via TwelveLabs Jockey · click any topic to jump the video</div>
+  </div>
+
+  <div class="layout">
+    <div class="player-panel">
+      <video id="player" controls playsinline></video>
+      <div class="player-foot">
+        <span>source: IMG_7828.mov</span>
+        <span class="now-playing" id="nowPlaying">00:00</span>
+      </div>
+    </div>
+
+    <div class="index-panel">
+      <div class="index-head">INDEXED TOPICS</div>
+      <div class="topic-list" id="topicList"></div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Topic boundaries and descriptions are drawn from a Jockey-indexed walkthrough of the full video.
+    Only the 02:14–02:40 segment is a direct match to Engram's published mechanism; everything else is
+    general memory-hierarchy context. Numbers called out as approximate in the source audio (the NVLink
+    interconnect speed) are marked accordingly.
+  </div>
+</div>
+
+<script>
+  const topics = [
+    { start: 0,   end: 28,  ts: "00:00", title: "Storage & system memory", tag: null,
+      desc: "NVMe placed on a CPU-side bus, DRAM added as main memory. Establishes CPU/DRAM/NVMe as one physical machine." },
+    { start: 28,  end: 56,  ts: "00:28", title: "GPU and VRAM", tag: null,
+      desc: "VRAM framed as fast but constrained — the tier where a model actually executes." },
+    { start: 56,  end: 81,  ts: "00:56", title: "First request, full load", tag: null,
+      desc: "On a first API request the model generally has to load in full — VRAM if it fits, otherwise DRAM." },
+    { start: 81,  end: 109, ts: "01:21", title: "96GB constraint & spillover", tag: null,
+      desc: "His Grace Hopper system's 96GB VRAM vs. a consumer 4090. Layers spill into DRAM when the model exceeds VRAM." },
+    { start: 109, end: 134, ts: "01:49", title: "MoE and routing", tag: null,
+      desc: "Zooms into model structure — Mixture-of-Experts layers, expert routing, selective attention." },
+    { start: 134, end: 160, ts: "02:14", title: "Static pattern offload (Engram match)", tag: "ENGRAM",
+      desc: "Early layers doing cheap, stereotyped associations (\u201cNew York\u201d) don't need VRAM — move to slow memory with a pointer, free VRAM for real reasoning." },
+    { start: 160, end: 178, ts: "02:40", title: "Clarification: one physical box", tag: null,
+      desc: "Confirms CPU, GPU, VRAM, DRAM, and NVMe are all inside one machine, not distributed." },
+    { start: 178, end: 227, ts: "02:58", title: "Grace Hopper specifics", tag: null,
+      desc: "96GB VRAM, CPU/GPU linked by NVLink. Interconnect speed given verbally — treat as approximate." },
+    { start: 227, end: 250, ts: "03:47", title: "Comparison to a 4090 PC", tag: null,
+      desc: "Grace Hopper (96GB, tight interconnect) vs. ~36GB VRAM + ~64GB DRAM on a consumer 4090 build." },
+    { start: 250, end: 260, ts: "04:10", title: "Apple unified memory", tag: null,
+      desc: "Closing comparison: unified memory merges the VRAM/DRAM split into one shared pool." }
+  ];
+
+  const video = document.getElementById('player');
+  const src = "https://deuqpmn4rs7j5.cloudfront.net/69c194c6cdb53de36d05bf90/assets/6a97299c2ea8530de49d635b/hlses/playlist.m3u8";
+
+  if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = src;
+  } else if (window.Hls && Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(src);
+    hls.attachMedia(video);
+  }
+
+  const listEl = document.getElementById('topicList');
+  const nowPlaying = document.getElementById('nowPlaying');
+
+  topics.forEach((t, i) => {
+    const row = document.createElement('div');
+    row.className = 'topic';
+    row.dataset.index = i;
+    row.innerHTML = `
+      <div class="ts">${t.ts}</div>
+      <div class="body">
+        <div class="title">${t.title}</div>
+        <div class="desc">${t.desc}</div>
+        ${t.tag ? `<div class="tag">${t.tag}</div>` : ''}
+      </div>
+    `;
+    row.addEventListener('click', () => {
+      video.currentTime = t.start;
+      video.play();
+    });
+    listEl.appendChild(row);
+  });
+
+  function fmt(sec) {
+    const m = Math.floor(sec / 60).toString().padStart(2, '0');
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  video.addEventListener('timeupdate', () => {
+    nowPlaying.textContent = fmt(video.currentTime);
+    const idx = topics.findIndex(t => video.currentTime >= t.start && video.currentTime < t.end);
+    document.querySelectorAll('.topic').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    if (idx >= 0) {
+      const activeEl = document.querySelector(`.topic[data-index="${idx}"]`);
+      if (activeEl) activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>
