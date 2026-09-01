@@ -25,7 +25,6 @@
     font-family: 'Inter', -apple-system, sans-serif;
   }
 
-  /* topbar, matches recordings.organizedai.vip pattern */
   .topbar {
     display: flex;
     align-items: center;
@@ -36,30 +35,49 @@
     font-size: 12px;
     letter-spacing: 0.03em;
     color: var(--text-dim);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
   }
   .topbar .brand { color: var(--text); font-weight: 500; }
   .topbar .brand span { color: var(--accent); }
+  .topbar nav { display: flex; gap: 20px; }
+  .topbar nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .topbar nav a:hover { color: var(--accent); border-bottom-color: var(--accent-dim); }
 
   .wrap {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 32px 28px 64px;
+    padding: 32px 28px 80px;
   }
 
-  .header {
-    margin-bottom: 24px;
+  section { scroll-margin-top: 60px; }
+  section + section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
   }
+
+  .header { margin-bottom: 24px; }
   .eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     color: var(--accent-dim);
     margin-bottom: 8px;
   }
-  h1 {
-    font-size: 26px;
-    font-weight: 600;
-    margin: 0 0 6px 0;
-    line-height: 1.25;
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 6px 0; line-height: 1.25; }
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    margin: 0 0 4px 0;
   }
   .meta {
     font-family: 'JetBrains Mono', monospace;
@@ -67,6 +85,7 @@
     color: var(--text-dim);
   }
 
+  /* --- video + index --- */
   .layout {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
@@ -74,11 +93,9 @@
     margin-top: 28px;
     align-items: start;
   }
-  @media (max-width: 860px) {
-    .layout { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
 
-  .player-panel {
+  .player-panel, .index-panel {
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 4px;
@@ -102,13 +119,6 @@
     justify-content: space-between;
   }
   .player-foot .now-playing { color: var(--accent); }
-
-  .index-panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-  }
   .index-head {
     padding: 14px 16px;
     border-bottom: 1px solid var(--line);
@@ -117,10 +127,7 @@
     color: var(--text-dim);
     letter-spacing: 0.03em;
   }
-  .topic-list {
-    max-height: 640px;
-    overflow-y: auto;
-  }
+  .topic-list { max-height: 640px; overflow-y: auto; }
   .topic {
     display: grid;
     grid-template-columns: 56px 1fr;
@@ -132,24 +139,10 @@
   }
   .topic:hover { background: var(--panel-2); }
   .topic.active { background: var(--panel-2); border-left: 2px solid var(--accent); }
-  .topic .ts {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent-dim);
-    padding-top: 1px;
-  }
+  .topic .ts { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-dim); padding-top: 1px; }
   .topic.active .ts { color: var(--accent); }
-  .topic .body .title {
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 3px;
-    color: var(--text);
-  }
-  .topic .body .desc {
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.45;
-  }
+  .topic .body .title { font-size: 13px; font-weight: 500; margin-bottom: 3px; color: var(--text); }
+  .topic .body .desc { font-size: 12px; color: var(--text-dim); line-height: 1.45; }
   .tag {
     display: inline-block;
     font-family: 'JetBrains Mono', monospace;
@@ -161,8 +154,79 @@
     margin-top: 6px;
   }
 
-  .footer-note {
+  /* --- diagram --- */
+  .diagram-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  svg { max-width: 100%; height: auto; }
+  .box { fill: var(--panel-2); stroke: var(--accent-dim); stroke-width: 1.5; }
+  .box-strong { fill: var(--panel-2); stroke: var(--accent); stroke-width: 2; }
+  .label { font-family: 'JetBrains Mono', monospace; fill: var(--text); font-size: 15px; text-anchor: middle; }
+  .label-small { font-family: 'JetBrains Mono', monospace; fill: var(--text-dim); font-size: 11px; text-anchor: middle; }
+  .conn { stroke: var(--line); stroke-width: 1.5; fill: none; }
+  .conn-arrow { stroke: var(--accent-dim); stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+
+  /* --- guide --- */
+  .guide { font-size: 14.5px; line-height: 1.7; color: var(--text); max-width: 860px; }
+  .guide h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin: 28px 0 8px 0;
+  }
+  .guide h3:first-child { margin-top: 0; }
+  .guide p { margin: 0 0 14px 0; color: var(--text); }
+  .guide .ts-mark {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-dim);
+    font-size: 12.5px;
+  }
+  .guide .engram-note {
+    background: var(--panel);
+    border: 1px solid var(--green);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin: 18px 0;
+  }
+  .guide .engram-note .tag { margin: 0 0 8px 0; }
+  table.map-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 8px 0;
+    font-size: 13px;
+  }
+  table.map-table th, table.map-table td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.map-table th {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+  table.map-table td.status-ok { color: var(--green); }
+  table.map-table td.status-gap { color: var(--accent-dim); }
+
+  .bottom-line {
     margin-top: 20px;
+    padding: 16px;
+    background: var(--panel);
+    border-left: 2px solid var(--accent);
+    border-radius: 2px;
+  }
+
+  .footer-note {
+    margin-top: 40px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     color: var(--text-dim);
@@ -174,37 +238,203 @@
 
 <div class="topbar">
   <div class="brand">ORGANIZED AI <span>// VIDEO INDEX</span></div>
-  <div>jockey-indexed · IMG_7828.mov</div>
+  <nav>
+    <a href="#watch">Watch</a>
+    <a href="#diagram">Diagram</a>
+    <a href="#guide">Guide</a>
+  </nav>
 </div>
 
 <div class="wrap">
+
   <div class="header">
     <div class="eyebrow">// WHITEBOARD WALKTHROUGH</div>
     <h1>Memory Hierarchy &amp; Engram Conditional Memory</h1>
-    <div class="meta">4:20 · indexed via TwelveLabs Jockey · click any topic to jump the video</div>
+    <div class="meta">4:20 · indexed via TwelveLabs Jockey · source: IMG_7828.mov</div>
   </div>
 
-  <div class="layout">
-    <div class="player-panel">
-      <video id="player" controls playsinline></video>
-      <div class="player-foot">
-        <span>source: IMG_7828.mov</span>
-        <span class="now-playing" id="nowPlaying">00:00</span>
+  <section id="watch">
+    <h2>// WATCH — click a topic to jump the video</h2>
+    <div class="layout">
+      <div class="player-panel">
+        <video id="player" controls playsinline></video>
+        <div class="player-foot">
+          <span>source: IMG_7828.mov</span>
+          <span class="now-playing" id="nowPlaying">00:00</span>
+        </div>
+      </div>
+      <div class="index-panel">
+        <div class="index-head">INDEXED TOPICS</div>
+        <div class="topic-list" id="topicList"></div>
       </div>
     </div>
+  </section>
 
-    <div class="index-panel">
-      <div class="index-head">INDEXED TOPICS</div>
-      <div class="topic-list" id="topicList"></div>
+  <section id="diagram">
+    <h2>// DIAGRAM — redrawn from the whiteboard</h2>
+    <div class="diagram-panel">
+      <svg width="820" height="560" viewBox="0 0 820 560">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#c4943d"/>
+          </marker>
+        </defs>
+
+        <text class="label-small" x="150" y="26" fill="#8ab86b">backbone compute</text>
+        <rect class="box-strong" x="60" y="40" width="180" height="46" rx="3"/>
+        <text class="label" x="150" y="68">96GB VRAM</text>
+
+        <line class="conn" x1="150" y1="86" x2="150" y2="120"/>
+        <rect class="box" x="80" y="120" width="140" height="60" rx="3"/>
+        <text class="label-small" x="150" y="146">Transformer</text>
+        <text class="label-small" x="150" y="162">backbone weights</text>
+
+        <text class="label-small" x="590" y="26" fill="#8ab86b">Engram memory table (offloaded)</text>
+        <rect class="box-strong" x="440" y="40" width="140" height="46" rx="3"/>
+        <text class="label" x="510" y="68">DRAM</text>
+        <text class="label-small" x="510" y="24">embedding table</text>
+
+        <line class="conn" x1="510" y1="86" x2="510" y2="120"/>
+        <rect class="box-strong" x="440" y="120" width="120" height="46" rx="3"/>
+        <text class="label" x="500" y="148">CPU</text>
+        <text class="label-small" x="500" y="105">hashed N-gram addr</text>
+
+        <line class="conn-arrow" x1="560" y1="143" x2="620" y2="143"/>
+        <rect class="box-strong" x="622" y="120" width="120" height="46" rx="3"/>
+        <text class="label" x="682" y="148">NVMe</text>
+        <text class="label-small" x="682" y="106">cold tier</text>
+
+        <text class="label-small" x="682" y="185">unseen n-grams · 20% holdout</text>
+
+        <line class="conn" x1="150" y1="180" x2="150" y2="260"/>
+        <line class="conn" x1="500" y1="166" x2="500" y2="260"/>
+        <line class="conn" x1="682" y1="166" x2="682" y2="260"/>
+        <line class="conn" x1="150" y1="260" x2="682" y2="260"/>
+
+        <text class="label-small" x="380" y="290" fill="#8ab86b">context-aware</text>
+        <polygon points="345,300 415,300 380,350" fill="none" stroke="#8ab86b" stroke-width="1.5"/>
+        <text class="label-small" x="380" y="368" fill="#8ab86b">gating (fusion)</text>
+
+        <line class="conn" x1="150" y1="260" x2="150" y2="325"/>
+        <line class="conn-arrow" x1="150" y1="325" x2="345" y2="325"/>
+
+        <line class="conn-arrow" x1="415" y1="325" x2="470" y2="325"/>
+        <text class="label-small" x="443" y="315">page</text>
+
+        <rect class="box" x="472" y="300" width="130" height="50" rx="3"/>
+        <text class="label-small" x="537" y="322">baseline</text>
+        <text class="label-small" x="537" y="338">(no Engram)</text>
+
+        <line class="conn-arrow" x1="602" y1="325" x2="670" y2="325"/>
+        <text class="label" x="700" y="330">Test</text>
+
+        <path class="conn" d="M700,340 q0,14 -14,14" />
+        <path class="conn" d="M700,354 q0,14 -14,14" />
+        <path class="conn" d="M700,368 q0,14 -14,14" />
+        <text class="label-small" x="720" y="382">NIAH / knowledge benchmarks</text>
+
+        <line class="conn" x1="150" y1="440" x2="700" y2="440"/>
+        <rect class="box-strong" x="600" y="415" width="80" height="42" rx="3"/>
+        <text class="label" x="640" y="441">0.6</text>
+        <text class="label-small" x="640" y="470">gating scalar α / score</text>
+
+        <text class="label-small" x="150" y="500" font-size="18" fill="#f5d623">vLLM + Engram</text>
+        <text class="label-small" x="150" y="524" font-size="15">vs. stock LLM</text>
+      </svg>
     </div>
-  </div>
+    <div class="footer-note" style="margin-top:16px;">
+      Node positions, connectors, and the literal words VRAM / DRAM / CPU / NVMe / unseen set /
+      harness / test / 0.6 / vLLM / LLM are read directly off the source frame. The Engram-specific
+      labels (embedding table, hashed N-gram addressing, context-aware gating, baseline/no-Engram)
+      are a mapping onto Engram's published mechanism, not text visible on the board itself.
+    </div>
+  </section>
 
-  <div class="footer-note">
-    Topic boundaries and descriptions are drawn from a Jockey-indexed walkthrough of the full video.
-    Only the 02:14–02:40 segment is a direct match to Engram's published mechanism; everything else is
-    general memory-hierarchy context. Numbers called out as approximate in the source audio (the NVLink
-    interconnect speed) are marked accordingly.
-  </div>
+  <section id="guide">
+    <h2>// GUIDE — full video walkthrough</h2>
+    <div class="guide">
+      <p>The talk is broader than just Engram. It's a walkthrough of the full memory hierarchy an
+      LLM inference system runs on — VRAM, DRAM, NVMe, and how a model's weights move across them —
+      with one specific segment describing something that matches Engram's mechanism almost exactly.
+      This guide walks through what was actually said, in order, and marks where the diagram above
+      maps to spoken content versus where it doesn't.</p>
+
+      <h3><span class="ts-mark">[00:00–00:28]</span> Storage and system memory</h3>
+      <p>Opens by placing NVMe on a CPU-side bus, then adds DRAM as the system's main memory.
+      Establishes that CPU, DRAM, and NVMe are parts of one physical machine, not separate services.</p>
+
+      <h3><span class="ts-mark">[00:28–00:56]</span> GPU and VRAM</h3>
+      <p>VRAM is framed as fast but constrained — the tier where a model actually executes, in
+      contrast to larger and slower DRAM/NVMe.</p>
+
+      <h3><span class="ts-mark">[00:56–01:21]</span> First request, full load</h3>
+      <p>On a first API request, the model generally has to be loaded in full — ideally into VRAM
+      if it fits, otherwise into DRAM. Model size relative to available VRAM is the operational
+      constraint.</p>
+
+      <h3><span class="ts-mark">[01:21–01:49]</span> The 96GB constraint and spillover</h3>
+      <p>This is where <strong>96GB VRAM</strong> on the diagram comes from directly — his own Grace
+      Hopper system, contrasted with a consumer 4090 card. If the model exceeds available VRAM,
+      layers "spill" into DRAM and get pulled back as needed. Capacity-vs-speed tradeoff: it still
+      runs, just slower across tiers.</p>
+
+      <h3><span class="ts-mark">[01:49–02:14]</span> Model internals: MoE and routing</h3>
+      <p>Zooms from hardware into model structure — Mixture-of-Experts layers, expert routing,
+      selective attention. Not every part of the model needs to be active for every input.</p>
+
+      <div class="engram-note">
+        <div class="tag">ENGRAM MATCH</div>
+        <h3 style="margin-top:0;"><span class="ts-mark">[02:14–02:40]</span> Static pattern offload</h3>
+        <p style="margin-bottom:0;">This is the part that's actually Engram. The example given: early
+        layers handle simple, stereotyped associations — "New York," where "New" and "York" are a
+        near-fixed pairing — and because that's cheap, static pattern-matching rather than real
+        reasoning, those layers don't need to sit in scarce, expensive VRAM. They can live in slower
+        memory, addressed by a pointer, freeing VRAM for the layers that actually benefit from it.
+        That's the same shape as Engram's core claim: separate static knowledge lookup from dynamic
+        reasoning, offload the former, keep the latter where compute is fast.</p>
+      </div>
+
+      <h3><span class="ts-mark">[02:40–02:58]</span> Clarification</h3>
+      <p>Confirms all of this — CPU, GPU, VRAM, DRAM, NVMe — is one physical box, not a distributed
+      system.</p>
+
+      <h3><span class="ts-mark">[02:58–03:47]</span> Grace Hopper specifics</h3>
+      <p>Names his own setup as Grace Hopper: 96GB VRAM for GPU work, CPU and GPU portions linked by
+      NVLink. An interconnect speed is mentioned but the unit in the audio isn't clear (roughly
+      "680 megabits or gigabits") — treat that number as approximate.</p>
+
+      <h3><span class="ts-mark">[03:47–04:10]</span> Comparison to a 4090 PC</h3>
+      <p>Grace Hopper (96GB VRAM, tight interconnect) vs. a 4090 setup (~36GB VRAM, ~64GB DRAM,
+      separate NVMe). Argument: total capacity isn't the whole story — where the model sits and how
+      fast each tier feeds the GPU matters just as much.</p>
+
+      <h3><span class="ts-mark">[04:10–04:20]</span> Apple unified memory</h3>
+      <p>Closing comparison: Apple's unified memory merges the VRAM/DRAM split into one shared pool,
+      removing that hard separation (though not automatically uniform speed or unlimited capacity).</p>
+
+      <h3>How this maps onto the diagram</h3>
+      <table class="map-table">
+        <tr><th>Diagram element</th><th>Timestamp</th><th>Status</th></tr>
+        <tr><td>96GB VRAM box</td><td>01:21–01:49, 02:58–03:47</td><td class="status-ok">Directly stated</td></tr>
+        <tr><td>DRAM / CPU / NVMe cluster</td><td>00:00–00:56</td><td class="status-ok">Directly stated</td></tr>
+        <tr><td>"Unseen n-grams" framing</td><td>02:14–02:40</td><td class="status-gap">My mapping of the "New York" example onto Engram's holdout-generalization framing — the video doesn't use the words "unseen set" or "20%"</td></tr>
+        <tr><td>Hashed N-gram addressing / pointer</td><td>02:14–02:40</td><td class="status-ok">Directly matches "a pointer indicating where they are"</td></tr>
+        <tr><td>Context-aware gating (fusion funnel)</td><td>—</td><td class="status-gap">Not stated in audio — this is Engram's published mechanism, not something said in the video</td></tr>
+        <tr><td>IO (control set) / Test / 0.6</td><td>—</td><td class="status-gap"><strong>Not covered anywhere in the audio.</strong> Legible on the whiteboard, not explained verbally. Possibly a leftover from a separate discussion — worth confirming before treating "0.6" as an Engram result.</td></tr>
+        <tr><td>vLLM / LLM labels</td><td>—</td><td class="status-gap">Not explained in audio either</td></tr>
+      </table>
+
+      <div class="bottom-line">
+        <strong>Bottom line:</strong> the clean, well-supported explanation is that VRAM is scarce
+        and fast, DRAM/NVMe are large and slow, and Engram's contribution is recognizing that some
+        layers only do cheap static pattern-matching — so move those to the slow tier with a pointer,
+        and save VRAM for layers doing real reasoning. That's timestamp 02:14–02:40, and it's solid.
+        The eval-harness portion of the diagram (unseen set / context / IO control set / test / 0.6)
+        is visually real but not verbally supported by this video.
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <script>
@@ -258,6 +488,7 @@
       </div>
     `;
     row.addEventListener('click', () => {
+      document.getElementById('watch').scrollIntoView({ behavior: 'smooth', block: 'start' });
       video.currentTime = t.start;
       video.play();
     });
